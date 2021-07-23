@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using net_core_api.Models;
 
 namespace net_core_api.Controllers
 {
@@ -10,10 +11,16 @@ namespace net_core_api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        [HttpGet("all-products")]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly BookContext _context;
+        public ProductController(BookContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
+        } 
+
+        [HttpGet("all-products")]
+        public List<Book> Get()
+        {
+            return _context.Books.ToList();
         }
 
         [HttpGet("{id}")]
