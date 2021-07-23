@@ -10,7 +10,7 @@ namespace net_core_api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        [HttpGet("")]
+        [HttpGet("all-products")]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
