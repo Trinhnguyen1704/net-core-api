@@ -16,6 +16,3 @@ namespace net_core_api.Models
         public DbSet<Book> Books {get; set;}
     }
 }
-
-// nạp chồng phương thức OnConfiguring, pt này được chạy khi đối tường DbContext được tạo ra
-// cấu hình cơ sở dữ liệu
