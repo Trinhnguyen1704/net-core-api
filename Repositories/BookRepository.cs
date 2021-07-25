@@ -54,7 +54,7 @@ namespace net_core_api.Repositories
 
             bookToUpdate.Title = book.Title;
             bookToUpdate.Author = book.Author;
-            bookToUpdate.IsAvalable = book.IsAvalable;
+            bookToUpdate.IsAvailable = book.IsAvailable;
             bookToUpdate.Description = book.Description;
 
             await _context.SaveChangesAsync();
