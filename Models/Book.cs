@@ -10,7 +10,7 @@ namespace net_core_api.Models
         public int  Id {get;set;}
         public string Title {get; set;}
         public string Author {get;set ;}
-        public bool IsAvalable {get;set;}
+        public bool IsAvailable {get;set;}
         public string Description {get;set;}
     }
 }
