@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using net_core_api.Models;
 
 namespace net_core_api.Repositories
@@ -15,29 +16,48 @@ namespace net_core_api.Repositories
         {
             _context = context;
         }
-        public Task<Book> AddBook(Book book)
+
+        // Add new book
+        public async Task<Book> AddBook(Book book)
         {
-            throw new NotImplementedException();
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();  // async
+
+            return book;
         }
 
-        public Task Delete(int id)
+        // Delete book
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var bookDeleted = await GetBook(id); // get book to delete
+
+            _context.Books.Remove(bookDeleted);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Book> GetBook(int id)
+        // Get Book with Id
+        public async Task<Book> GetBook(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Books.FirstOrDefaultAsync(book => book.Id == id);
         }
 
-        public Task<IEnumerable<Book>> GetBooks()
+        //Get book list
+        public async Task<IEnumerable<Book>> GetBooks()
         {
-            throw new NotImplementedException();
+            return await _context.Books.ToListAsync();
         }
 
-        public Task Update(Book book)
+        //Update book
+        public async Task Update(Book book)
         {
-            throw new NotImplementedException();
+            var bookToUpdate = await GetBook(book.Id);
+
+            bookToUpdate.Title = book.Title;
+            bookToUpdate.Author = book.Author;
+            bookToUpdate.IsAvalable = book.IsAvalable;
+            bookToUpdate.Description = book.Description;
+
+            await _context.SaveChangesAsync();
         }
     }
 }
