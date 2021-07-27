@@ -13,5 +13,6 @@ namespace net_core_api.Models
         {
         }
         public DbSet<Book> Books {get; set;}
+        public DbSet<Category> Categories {get; set;}
     }
 }
