@@ -37,7 +37,7 @@ namespace net_core_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "net_core_api", Version = "v1" });
             });
-            services.AddDbContext<BookContext>(options => options.UseSqlServer("server=localhost;database=bookstore;trusted_connection=true;"));
+            services.AddDbContext<BookContext>(options => options.UseSqlServer(@"Data Source=ADMIN; Initial Catalog=bookstore;" + "User ID=ADMIN; Integrated Security=True;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
