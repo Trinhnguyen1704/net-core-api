@@ -31,6 +31,7 @@ namespace net_core_api
         {
             //register repositories
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             //register controllers
             services.AddControllers();
             services.AddSwaggerGen(c =>
