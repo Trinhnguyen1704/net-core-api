@@ -9,8 +9,8 @@ using net_core_api.Models;
 namespace net_core_api.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20210723075603_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210725030406_database01")]
+    partial class database01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,7 @@ namespace net_core_api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAvalable")
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
