@@ -13,6 +13,7 @@ namespace net_core_api.Models
         [Key]
         public int  Id {get;set;}
         [Required]
+        [StringLength(100)]
         public string Title {get; set;}
         public string Author {get;set ;}
         [DataType(DataType.Date)]
