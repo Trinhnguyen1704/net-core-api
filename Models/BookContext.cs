@@ -11,7 +11,6 @@ namespace net_core_api.Models
         public BookContext(DbContextOptions<BookContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
         public DbSet<Book> Books {get; set;}
     }
