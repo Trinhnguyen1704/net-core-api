@@ -16,6 +16,6 @@ namespace net_core_api.Models
         [Key]
         public int CategoryId{get; set;}
         public string CategoryName {get; set;}
-        public virtual ICollection<Book> Books {get; set;}
+        public virtual ICollection<Book> Books {get; set;} // one category may have many books
     }
 }
