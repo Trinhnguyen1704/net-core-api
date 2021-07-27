@@ -15,6 +15,9 @@ namespace net_core_api.Models
         [Required]
         public string Title {get; set;}
         public string Author {get;set ;}
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "yyyy-MM-dd", ApplyFormatInEditMode =true)]
+        public string PublicationDate {get; set;}
         [Required]
         public bool IsAvailable {get;set;}
         public string Description {get;set;}
