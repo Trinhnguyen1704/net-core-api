@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using net_core_api.Models;
+using net_core_api.Repositories;
 
 namespace net_core_api
 {
@@ -26,12 +29,16 @@ namespace net_core_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //register repositories
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //register controllers
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "net_core_api", Version = "v1" });
             });
+            services.AddDbContext<BookContext>(options => options.UseSqlServer(@"Data Source=ADMIN; Initial Catalog=bookstore;" + "User ID=ADMIN; Integrated Security=True;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
