@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using net_core_api.Models;
 using net_core_api.Repositories;
+using System.Text.Json.Serialization;
 
 namespace net_core_api
 {
@@ -33,7 +34,9 @@ namespace net_core_api
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             //register controllers
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "net_core_api", Version = "v1" });
