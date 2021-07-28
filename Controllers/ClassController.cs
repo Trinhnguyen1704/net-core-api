@@ -8,7 +8,7 @@ using net_core_api.Repositories;
 
 namespace net_core_api.Controllers
 {
-    [Route("Api/[controller]")]
+    [Route("api/classes")]
     [ApiController]
     public class ClassController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace net_core_api.Controllers
         {
             _classRepository = classRepository;
         }
-        [HttpGet("all-classes")]
+        [HttpGet]
         public async Task<IEnumerable<Class>> GetClasses()
         {
             return await _classRepository.GetClasses();
