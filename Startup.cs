@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using net_core_api.Models;
 // using net_core_api.Repositories;
 using System.Text.Json.Serialization;
+using net_core_api.Repositories;
 
 namespace net_core_api
 {
@@ -31,8 +32,8 @@ namespace net_core_api
         public void ConfigureServices(IServiceCollection services)
         {
             //register repositories
-            // services.AddScoped<IBookRepository, BookRepository>();
-            // services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IClassRepository, ClassRepository>();
             //register controllers
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
