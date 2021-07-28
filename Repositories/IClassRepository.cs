@@ -13,5 +13,6 @@ namespace net_core_api.Repositories
         Task<Class> AddClass(Class classObject);
         Task Update(Class classObject);
         Task Delete(int id);
+        Task<IEnumerable<Class>> GetClassesByName(string className);
     }
 }

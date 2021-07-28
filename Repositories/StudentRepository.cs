@@ -34,6 +34,13 @@ namespace net_core_api.Repositories
             .FirstOrDefaultAsync(student => student.Id == id);
         }
 
+        public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
+        {
+            return await _context.Students
+            .Where(x=> x.ClassId == classId)
+            .ToListAsync();
+        }
+
         public async Task<IEnumerable<Student>> GetStudents()
         {
             return await _context.Students.Include(x => x.ClassNavigation).ToListAsync();
@@ -49,6 +56,13 @@ namespace net_core_api.Repositories
             studentToUpdate.AverageMark = student.AverageMark;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsWithMark(float averageMark)
+        {
+            return await _context.Students
+            .Where(x=> x.AverageMark > averageMark)
+            .ToListAsync();
         }
     }
 }

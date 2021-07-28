@@ -39,6 +39,13 @@ namespace net_core_api.Repositories
             return await _context.Classes.Include(x => x.Students).ToListAsync();
         }
 
+        public async Task<IEnumerable<Class>> GetClassesByName(string className)
+        {
+            return await _context.Classes.Include(x => x.Students).
+            Where(x => x.ClassName.Contains(className))
+            .ToListAsync();
+        }
+
         public async Task Update(Class classObject)
         {
             var classToUpdate = await GetClass(classObject.ClassId);
