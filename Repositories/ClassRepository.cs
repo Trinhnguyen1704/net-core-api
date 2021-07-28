@@ -34,6 +34,13 @@ namespace net_core_api.Repositories
             .FirstOrDefaultAsync(c => c.ClassId == id);
         }
 
+        public async Task<Class> GetClassByStudentId(int id)
+        {
+            return await _context.Classes.Include(x => x.Students)
+            .Where(x => x.Students.FirstOrDefault().ClassId == id)
+            .FirstOrDefaultAsync(c => c.ClassId == id);
+        }
+
         public async Task<IEnumerable<Class>> GetClasses()
         {
             return await _context.Classes.Include(x => x.Students).ToListAsync();
