@@ -44,7 +44,8 @@ namespace net_core_api.Repositories
         //Get book list
         public async Task<IEnumerable<Book>> GetBooks()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books.Include(x => x.CategoryIdNavigation).
+            ToListAsync();
         }
 
         //Update book
