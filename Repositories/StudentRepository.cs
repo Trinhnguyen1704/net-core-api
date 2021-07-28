@@ -30,20 +30,23 @@ namespace net_core_api.Repositories
 
         public async Task<Student> GetStudent(int id)
         {
-            return await _context.Students.Include(x => x.ClassNavigation)
+            return await _context.Students
+            .Include(x => x.Classes )
             .FirstOrDefaultAsync(student => student.Id == id);
         }
 
         public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
         {
             return await _context.Students
-            .Where(x=> x.ClassId == classId)
+            // .Where(x=> x.Classes.== classId)
             .ToListAsync();
         }
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _context.Students.Include(x => x.ClassNavigation).ToListAsync();
+            return await _context.Students
+            .Include(x => x.Classes)
+            .ToListAsync();
         }
 
         public async Task Update(Student student)
@@ -51,7 +54,6 @@ namespace net_core_api.Repositories
             var studentToUpdate = await GetStudent(student.Id);
 
             studentToUpdate.Name = student.Name;
-            studentToUpdate.ClassId = student.ClassId;
             studentToUpdate.DateOfBirth = student.DateOfBirth;
             studentToUpdate.AverageMark = student.AverageMark;
 

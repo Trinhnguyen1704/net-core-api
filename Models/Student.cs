@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 namespace net_core_api.Models
 {
     [Table("Student")]
-    public class Student
+    public partial class Student
     {
+        public Student() {
+            Classes = new HashSet<Class>();
+        }
         [Key]
         public int Id {get; set;}
         public string Name {get; set;}
@@ -17,9 +20,6 @@ namespace net_core_api.Models
         [DisplayFormat(DataFormatString = "0:yyyy-MM-dd", ApplyFormatInEditMode =true)]
         public string DateOfBirth {get; set;}
         public float AverageMark {get; set;}
-        public int? ClassId {get;set;}
-        [ForeignKey("ClassId")]
-
-        public virtual Class ClassNavigation {get; set;}
+        public virtual ICollection<Class> Classes {get; set;}
     }
 }

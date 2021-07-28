@@ -8,7 +8,7 @@ using net_core_api.Repositories;
 
 namespace net_core_api.Controllers
 {
-    [Route("Api/[controller]")]
+    [Route("api/students")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace net_core_api.Controllers
         {
             _studentRepository = studentRepository;
         }
-        [HttpGet("all-students")]
+        [HttpGet]
         public async Task<IEnumerable<Student>> GetStudents()
         {
             return await _studentRepository.GetStudents();
@@ -60,7 +60,7 @@ namespace net_core_api.Controllers
             return NoContent();
         }
 
-        [HttpGet("students/{classId}")]
+        [HttpGet("class/{classId}")]
         public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
         {
             return await _studentRepository.GetStudentsByClassId(classId);
