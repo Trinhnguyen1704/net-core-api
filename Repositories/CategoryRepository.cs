@@ -32,7 +32,8 @@ namespace net_core_api.Repositories
 
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories.Include(x => x.Books).
+            ToListAsync();
         }
 
         public async Task<Category> GetCategory(int id)
