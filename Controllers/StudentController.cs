@@ -8,7 +8,7 @@ using net_core_api.Repositories;
 
 namespace net_core_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -58,6 +58,18 @@ namespace net_core_api.Controllers
             }
             await _studentRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("students/{classId}")]
+        public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
+        {
+            return await _studentRepository.GetStudentsByClassId(classId);
+        }
+        
+        [HttpGet("mark")]
+        public async Task<IEnumerable<Student>> GetStudentsWithMark([FromQuery] float averageMark)
+        {
+            return await _studentRepository.GetStudentsWithMark(averageMark);
         }
     }
 }

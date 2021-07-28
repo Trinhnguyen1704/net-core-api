@@ -8,7 +8,7 @@ using net_core_api.Repositories;
 
 namespace net_core_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Api/[controller]")]
     [ApiController]
     public class ClassController : ControllerBase
     {
@@ -57,6 +57,12 @@ namespace net_core_api.Controllers
             }
             await _classRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("class-name")]
+        public async Task<IEnumerable<Class>> GetClassesByName([FromQuery] string className )
+        {
+            return await _classRepository.GetClassesByName(className);
         }
     }
 }
