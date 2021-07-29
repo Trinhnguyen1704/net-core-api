@@ -42,7 +42,7 @@ namespace net_core_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "net_core_api", Version = "v1" });
             });
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(@"Data Source=ADMIN; Initial Catalog=student;" + "User ID=ADMIN; Integrated Security=True;"));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentManagementDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
