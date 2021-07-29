@@ -36,7 +36,7 @@ namespace net_core_api.Repositories
 
         public async Task<IEnumerable<Class>> GetClasses()
         {
-            return await _context.Classes.Include(x => x.Students).ToListAsync();
+            return await _context.Classes.Include(x => x.Students).AsNoTracking().ToListAsync();
         }
 
         public async Task<IEnumerable<Class>> GetClassesByName(string className)

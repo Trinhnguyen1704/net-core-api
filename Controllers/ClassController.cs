@@ -65,10 +65,10 @@ namespace net_core_api.Controllers
             return await _classRepository.GetClassesByName(className);
         }
 
-        [HttpGet("student")]
-        public async Task<IEnumerable<Class>> GetClassByStudentId([FromQuery] int id)
+        [HttpGet("student/{studentId}")]
+        public async Task<IEnumerable<Class>> GetClassByStudentId(int studentId)
         {
-            return await _classRepository.GetClassByStudentId(id);
+            return await _classRepository.GetClassByStudentId(studentId);
         }
     }
 }
