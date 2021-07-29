@@ -16,6 +16,7 @@ using net_core_api.Models;
 // using net_core_api.Repositories;
 using System.Text.Json.Serialization;
 using net_core_api.Repositories;
+using net_core_api.Persistence.Helper;
 
 namespace net_core_api
 {
@@ -31,6 +32,7 @@ namespace net_core_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
             //register repositories
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IClassRepository, ClassRepository>();
