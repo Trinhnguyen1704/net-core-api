@@ -16,49 +16,117 @@ namespace net_core_api.Repositories
         }
         public async Task<Class> AddClass(Class classObject)
         {
-            _context.Classes.Add(classObject);
-            await _context.SaveChangesAsync();
-            return classObject;
+            try 
+            {
+                _context.Classes.Add(classObject);
+                await _context.SaveChangesAsync();
+                return classObject;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
 
         public async Task Delete(int id)
         {
-            var classToDelete = await GetClass(id);
-            _context.Classes.Remove(classToDelete);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var classToDelete = await GetClass(id);
+                _context.Classes.Remove(classToDelete);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+           
         }
 
         public async Task<Class> GetClass(int id)
         {
-            return await _context.Classes.Include(x => x.Students)
-            .FirstOrDefaultAsync(c => c.ClassId == id);
+            try
+            {
+                return await _context.Classes.Include(x => x.Students)
+                .FirstOrDefaultAsync(c => c.ClassId == id);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
 
         public async Task<IEnumerable<Class>> GetClasses()
         {
-            return await _context.Classes.Include(x => x.Students).AsNoTracking().ToListAsync();
+            try
+            {
+                return await _context.Classes.Include(x => x.Students).AsNoTracking().ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;  
         }
 
         public async Task<IEnumerable<Class>> GetClassesByName(string className)
         {
-            return await _context.Classes.Include(x => x.Students).
-            Where(x => x.ClassName.Contains(className))
-            .ToListAsync();
+            try{
+                return await _context.Classes.Include(x => x.Students).
+                Where(x => x.ClassName.Contains(className))
+                .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
 
         public async Task Update(Class classObject)
         {
-            var classToUpdate = await GetClass(classObject.ClassId);
+            try
+            {
+                var classToUpdate = await GetClass(classObject.ClassId);
             
-            classToUpdate.ClassName = classObject.ClassName;
-            await _context.SaveChangesAsync();
+                classToUpdate.ClassName = classObject.ClassName;
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            } 
         }
 
         public async Task<IEnumerable<Class>> GetClassByStudentId(int id)
         {
-             return await _context.Classes.Where(x => x.Students.Where(s => s.Id == id).Count() > 0)
-             .Include(x => x.Students)
-            .AsNoTracking().ToArrayAsync();
+            try
+            {
+                return await _context.Classes.Where(x => x.Students.Where(s => s.Id == id).Count() > 0)
+                .Include(x => x.Students)
+                .AsNoTracking().ToArrayAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsByClassId(int id)
+        {
+            try
+            {
+                var classToSelect =  await GetClass(id);
+                return classToSelect.Students;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
     }
 }

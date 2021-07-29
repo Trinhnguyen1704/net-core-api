@@ -29,6 +29,12 @@ namespace net_core_api.Controllers
             return await _studentRepository.GetStudent(id);
         }
 
+        [HttpGet("{studentId}/classes")]
+        public async Task<IEnumerable<Class>> GetClassesByStudentId(int studentId)
+        {
+            return await _studentRepository.GetClassesByStudentId(studentId);
+        }
+
         [HttpPost]
         public async Task<Student> AddStudent([FromBody] Student student)
         {
@@ -58,12 +64,6 @@ namespace net_core_api.Controllers
             }
             await _studentRepository.Delete(id);
             return NoContent();
-        }
-
-        [HttpGet("class/{classId}")]
-        public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
-        {
-            return await _studentRepository.GetStudentsByClassId(classId);
         }
         
         [HttpGet("mark")]

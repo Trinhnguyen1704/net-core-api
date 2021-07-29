@@ -16,56 +16,107 @@ namespace net_core_api.Repositories
         }
         public async Task<Student> AddStudent(Student student)
         {
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
-            return student;
+            try
+            {
+                _context.Students.Add(student);
+                await _context.SaveChangesAsync();
+                return student;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+           return null;
         }
 
         public async Task Delete(int id)
         {
-            var studentToDelete = await GetStudent(id);
-            _context.Students.Remove(studentToDelete);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var studentToDelete = await GetStudent(id);
+                _context.Students.Remove(studentToDelete);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task<Student> GetStudent(int id)
         {
-            return await _context.Students
-            .Include(x => x.Classes )
-            .FirstOrDefaultAsync(student => student.Id == id);
+            try
+            {
+                return await _context.Students
+                .Include(x => x.Classes )
+                .FirstOrDefaultAsync(student => student.Id == id);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
+        public async Task<IEnumerable<Class>> GetClassesByStudentId(int studentId)
         {
-            return await _context.Students.Where(x => x.Classes.Where(c => c.ClassId == classId).Count() > 0)
-            .Include(x => x.Classes)
-            .AsNoTracking().ToArrayAsync();
+            try
+            {
+                var studentToSelect = await GetStudent(studentId);
+                return studentToSelect.Classes;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
 
         public async Task<IEnumerable<Student>> GetStudents()
         {
-            return await _context.Students
-            .Include(x => x.Classes)
-            .AsNoTracking()
-            .ToListAsync();
+            try
+            {
+                return await _context.Students
+                .Include(x => x.Classes)
+                .AsNoTracking()
+                .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
 
         public async Task Update(Student student)
         {
-            var studentToUpdate = await GetStudent(student.Id);
-
-            studentToUpdate.Name = student.Name;
-            studentToUpdate.DateOfBirth = student.DateOfBirth;
-            studentToUpdate.AverageMark = student.AverageMark;
-
-            await _context.SaveChangesAsync();
+            try
+            {
+                var studentToUpdate = await GetStudent(student.Id);
+                studentToUpdate.Name = student.Name;
+                studentToUpdate.DateOfBirth = student.DateOfBirth;
+                studentToUpdate.AverageMark = student.AverageMark;
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<Student>> GetStudentsWithMark(float averageMark)
         {
-            return await _context.Students
-            .Where(x=> x.AverageMark > averageMark)
-            .ToListAsync();
+            try
+            {
+                return await _context.Students
+                .Where(x=> x.AverageMark > averageMark)
+                .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
     }
 }

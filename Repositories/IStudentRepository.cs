@@ -13,7 +13,7 @@ namespace net_core_api.Repositories
         Task<Student> AddStudent(Student student);
         Task Update(Student student);
         Task Delete(int id);
-        Task<IEnumerable<Student>> GetStudentsByClassId(int classId);
+        Task<IEnumerable<Class>> GetClassesByStudentId(int studentId);
         Task<IEnumerable<Student>> GetStudentsWithMark(float averageMark);
     }
 }
