@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using net_core_api.Models;
+using net_core_api.Models.DTOs;
 using net_core_api.Repositories;
 
 namespace net_core_api.Controllers
@@ -12,10 +14,12 @@ namespace net_core_api.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IClassRepository _classRepository;
-        public ClassController(IClassRepository classRepository)
+        public ClassController(IClassRepository classRepository, IMapper mapper)
         {
             _classRepository = classRepository;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IEnumerable<Class>> GetClasses()
@@ -29,11 +33,16 @@ namespace net_core_api.Controllers
             return await _classRepository.GetClass(id);
         }
 
-        [HttpPost]
-        public async Task<Class> AddClass([FromBody] Class classObject)
+        [HttpGet("student/{studentId}")]
+        public async Task<IEnumerable<Class>> GetClassByStudentId(int studentId)
         {
-            var newClass = await _classRepository.AddClass(classObject);
-            return newClass;
+            return await _classRepository.GetClassByStudentId(studentId);
+        }
+
+        [HttpPost]
+        public async Task<Class> AddClass([FromBody] ClassDTO classObject)
+        {
+            return await _classRepository.AddClass(_mapper.Map<Class>(classObject));
         }
 
         [HttpPut("{id}")]
@@ -65,10 +74,5 @@ namespace net_core_api.Controllers
             return await _classRepository.GetClassesByName(className);
         }
 
-        [HttpGet("student/{studentId}")]
-        public async Task<IEnumerable<Class>> GetClassByStudentId(int studentId)
-        {
-            return await _classRepository.GetClassByStudentId(studentId);
-        }
     }
 }
