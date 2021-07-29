@@ -34,13 +34,6 @@ namespace net_core_api.Repositories
             .FirstOrDefaultAsync(c => c.ClassId == id);
         }
 
-        public async Task<Class> GetClassByStudentId(int id)
-        {
-            return await _context.Classes.Include(x => x.Students)
-            // .Where(x => x.Students.FirstOrDefault().ClassId == id)
-            .FirstOrDefaultAsync(c => c.ClassId == id);
-        }
-
         public async Task<IEnumerable<Class>> GetClasses()
         {
             return await _context.Classes.Include(x => x.Students).ToListAsync();
@@ -59,6 +52,13 @@ namespace net_core_api.Repositories
             
             classToUpdate.ClassName = classObject.ClassName;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Class>> GetClassByStudentId(int id)
+        {
+             return await _context.Classes.Where(x => x.Students.Where(s => s.Id == id).Count() > 0)
+             .Include(x => x.Students)
+            .AsNoTracking().ToArrayAsync();
         }
     }
 }
