@@ -33,10 +33,10 @@ namespace net_core_api.Controllers
             return await _classRepository.GetClass(id);
         }
 
-        [HttpGet("student/{studentId}")]
-        public async Task<IEnumerable<Class>> GetClassByStudentId(int studentId)
+        [HttpGet("{classId}/students")]
+        public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
         {
-            return await _classRepository.GetClassByStudentId(studentId);
+            return await _classRepository.GetStudentsByClassId(classId);
         }
 
         [HttpPost]
