@@ -35,11 +35,10 @@ namespace net_core_api.Repositories
             .FirstOrDefaultAsync(student => student.Id == id);
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByClassId(int classId)
+        public async Task<IEnumerable<Class>> GetClassesByStudentId(int studentId)
         {
-            return await _context.Students.Where(x => x.Classes.Where(c => c.ClassId == classId).Count() > 0)
-            .Include(x => x.Classes)
-            .AsNoTracking().ToArrayAsync();
+            var studentToSelect = await GetStudent(studentId);
+            return studentToSelect.Classes;
         }
 
         public async Task<IEnumerable<Student>> GetStudents()
