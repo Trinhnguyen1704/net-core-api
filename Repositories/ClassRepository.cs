@@ -48,7 +48,7 @@ namespace net_core_api.Repositories
         {
             try
             {
-                return await _context.Classes.Include(x => x.ClassStudents)
+                return await _context.Classes.Include(x => x.Students)
                 .FirstOrDefaultAsync(c => c.ClassId == id);
             }
             catch(Exception ex)
@@ -62,7 +62,7 @@ namespace net_core_api.Repositories
         {
             try
             {
-                return await _context.Classes.ToListAsync();
+                return await _context.Classes.Include(x => x.Students).AsNoTracking().ToListAsync();
             }
             catch(Exception ex)
             {
@@ -74,7 +74,7 @@ namespace net_core_api.Repositories
         public async Task<IEnumerable<Class>> GetClassesByName(string className)
         {
             try{
-                return await _context.Classes.Include(x => x.ClassStudents).
+                return await _context.Classes.Include(x => x.Students).
                 Where(x => x.ClassName.Contains(className))
                 .ToListAsync();
             }
@@ -104,8 +104,8 @@ namespace net_core_api.Repositories
         {
             try
             {
-                return await _context.Classes.Where(x => x.ClassStudents.Where(s => s.Id == id).Count() > 0)
-                .Include(x => x.ClassStudents)
+                return await _context.Classes.Where(x => x.Students.Where(s => s.Id == id).Count() > 0)
+                .Include(x => x.Students)
                 .AsNoTracking().ToArrayAsync();
             }
             catch(Exception ex)
@@ -119,8 +119,8 @@ namespace net_core_api.Repositories
         {
             try
             {
-                List<int> studentIds = _context.ClassStudents.Where(c => c.ClassId == id).Select(c => c.StudentId).ToList();
-                return await _context.Students.Where(c => studentIds.Contains(c.Id)).ToListAsync();
+                var classToSelect =  await GetClass(id);
+                return classToSelect.Students;
             }
             catch(Exception ex)
             {

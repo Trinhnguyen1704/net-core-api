@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using net_core_api.Models;
-using net_core_api.Models.DTOs;
 
 namespace net_core_api.Repositories
 {
@@ -11,7 +10,7 @@ namespace net_core_api.Repositories
     {
         Task<IEnumerable<Student>> GetStudents();
         Task<Student> GetStudent(int id);
-        Task<Student> AddStudent(StudentDTO student);
+        Task<Student> AddStudent(Student student);
         Task Update(Student student);
         Task Delete(int id);
         Task<IEnumerable<Class>> GetClassesByStudentId(int studentId);

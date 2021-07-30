@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using net_core_api.Models;
 using net_core_api.Repositories;
-using AutoMapper;
-using net_core_api.Models.DTOs;
 
 namespace net_core_api.Controllers
 {
@@ -14,12 +12,10 @@ namespace net_core_api.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-         private readonly IMapper _mapper;
         private readonly IStudentRepository _studentRepository;
-        public StudentController(IStudentRepository studentRepository, IMapper mapper)
+        public StudentController(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
-            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IEnumerable<Student>> GetStudents()
@@ -40,7 +36,7 @@ namespace net_core_api.Controllers
         }
 
         [HttpPost]
-        public async Task<Student> AddStudent([FromBody] StudentDTO student)
+        public async Task<Student> AddStudent([FromBody] Student student)
         {
             var newStudent = await _studentRepository.AddStudent(student);
             return newStudent;

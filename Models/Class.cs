@@ -11,13 +11,13 @@ namespace net_core_api.Models
     public partial class Class
     {
         public Class() {
-            ClassStudents = new HashSet<ClassStudent>();
+            Students = new HashSet<Student>();
         }
         [Key]
         public int ClassId {get; set;}
         [Required]
         [StringLength(20)]
         public string ClassName {get; set;}
-        public virtual ICollection<ClassStudent> ClassStudents {get; set;}
+        public virtual ICollection<Student> Students {get; set;}
     }
 }
