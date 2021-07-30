@@ -72,5 +72,11 @@ namespace net_core_api.Controllers
         {
             return await _studentRepository.GetStudentsWithMark(averageMark);
         }
+
+        [HttpGet("name")]
+        public async Task<IEnumerable<Student>> GetStudentsByName([FromQuery] string studentName)
+        {
+            return await _studentRepository.GetStudentsByName(studentName);
+        }
     }
 }

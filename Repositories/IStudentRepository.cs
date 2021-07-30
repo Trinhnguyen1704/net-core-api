@@ -16,5 +16,6 @@ namespace net_core_api.Repositories
         Task Delete(int id);
         Task<IEnumerable<Class>> GetClassesByStudentId(int studentId);
         Task<IEnumerable<Student>> GetStudentsWithMark(float averageMark);
+        Task<IEnumerable<Student>> GetStudentsByName(string studentName);
     }
 }

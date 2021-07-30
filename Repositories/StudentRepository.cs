@@ -19,16 +19,16 @@ namespace net_core_api.Repositories
         {
             try
             {
-                List<Class> classList = _context.Classes.Where(c => student.ClassIds.Contains(c.ClassId)).ToList();
-                var newStudent = new Student() {
+                List<Class> classes = _context.Classes.Where(c => student.ClassIds.Contains(c.ClassId)).ToList();
+                var _newStudent = new Student() {
                     Name = student.Name,
                     DateOfBirth = student.DateOfBirth,
                     AverageMark = student.AverageMark,
-                    Classes = classList
+                    Classes = classes
                 };
-                _context.Students.Add(newStudent);
+                _context.Students.Add(_newStudent);
                 await _context.SaveChangesAsync();
-                return newStudent;
+                return _newStudent;
             }
             catch(Exception ex)
             {
@@ -56,7 +56,8 @@ namespace net_core_api.Repositories
             try
             {
                 return await _context.Students
-                .Include(x => x.Classes )
+                .Include(x => x.Classes)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(student => student.Id == id);
             }
             catch(Exception ex)
@@ -118,6 +119,20 @@ namespace net_core_api.Repositories
             {
                 return await _context.Students
                 .Where(x=> x.AverageMark > averageMark)
+                .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsByName(string studentName)
+        {
+            try{
+                return await _context.Students.Include(x => x.Classes).
+                Where(x => x.Name.Contains(studentName))
                 .ToListAsync();
             }
             catch(Exception ex)
