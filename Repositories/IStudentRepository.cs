@@ -12,10 +12,14 @@ namespace net_core_api.Repositories
         Task<IEnumerable<Student>> GetStudents();
         Task<Student> GetStudent(int id);
         Task<Student> AddStudent(StudentDTO student);
-        Task Update(Student student);
+        Task Update(StudentDTO student);
         Task Delete(int id);
         Task<IEnumerable<Class>> GetClassesByStudentId(int studentId);
-        Task<IEnumerable<Student>> GetStudentsWithMark(float averageMark);
+        Task<IEnumerable<Student>> GetStudentsWithMark(float averageMarkMin, float averageMarkMax);
         Task<IEnumerable<Student>> GetStudentsByName(string studentName);
+        Task<IEnumerable<Student>> SortStudentByMark(int sortNo);
+
+        Task<IEnumerable<Student>> GetStudentsInSameClass(int studentId, int classId);
+
     }
 }

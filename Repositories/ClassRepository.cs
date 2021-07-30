@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using net_core_api.Models;
+using net_core_api.Models.DTOs;
 
 namespace net_core_api.Repositories
 {
@@ -121,6 +122,20 @@ namespace net_core_api.Repositories
             {
                 var classToSelect =  await GetClass(id);
                 return classToSelect.Students;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<ClassSatisticDTO>> GetTotalStudents()
+        {
+             try
+            {
+                return await _context.Classes
+                .Include(x => x.Students).Select(c => new ClassSatisticDTO() {ClassName = c.ClassName,TotalStudents= c.Students.Count()}).ToListAsync();
             }
             catch(Exception ex)
             {
