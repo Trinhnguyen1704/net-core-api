@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using net_core_api.Models;
+using net_core_api.Models.DTOs;
 
 namespace net_core_api.Repositories
 {
@@ -14,13 +15,30 @@ namespace net_core_api.Repositories
         {
             _context = context;
         }
-        public async Task<Student> AddStudent(Student student)
+        public async Task<Student> AddStudent(StudentDTO student)
         {
             try
             {
-                _context.Students.Add(student);
+                var _student = new Student()
+                {
+                    Name = student.Name,
+                    DateOfBirth = student.DateOfBirth,
+                    AverageMark = student.AverageMark,
+                };
+                _context.Students.Add(_student);
                 await _context.SaveChangesAsync();
-                return student;
+                foreach(var id in student.ClassIds)
+                {
+                    var _class_student = new ClassStudent()
+                    {
+                        StudentId = _student.Id,
+                        ClassId = id
+                    };
+                    _context.ClassStudents.Add(_class_student);
+                     await _context.SaveChangesAsync();
+                }
+            
+                return _student;
             }
             catch(Exception ex)
             {
@@ -48,7 +66,7 @@ namespace net_core_api.Repositories
             try
             {
                 return await _context.Students
-                .Include(x => x.Classes )
+                .Include(x => x.ClassStudents)
                 .FirstOrDefaultAsync(student => student.Id == id);
             }
             catch(Exception ex)
@@ -62,8 +80,8 @@ namespace net_core_api.Repositories
         {
             try
             {
-                var studentToSelect = await GetStudent(studentId);
-                return studentToSelect.Classes;
+                List<int> classIds = _context.ClassStudents.Where(c => c.StudentId == studentId).Select(c => c.ClassId).ToList();
+                return await _context.Classes.Where(c => classIds.Contains(c.ClassId)).ToListAsync();
             }
             catch(Exception ex)
             {
@@ -77,8 +95,7 @@ namespace net_core_api.Repositories
             try
             {
                 return await _context.Students
-                .Include(x => x.Classes)
-                .AsNoTracking()
+                .Include(x => x.ClassStudents)
                 .ToListAsync();
             }
             catch(Exception ex)
