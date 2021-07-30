@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using net_core_api.Models;
+using net_core_api.Models.DTOs;
 using net_core_api.Repositories;
 
 namespace net_core_api.Controllers
@@ -36,7 +37,7 @@ namespace net_core_api.Controllers
         }
 
         [HttpPost]
-        public async Task<Student> AddStudent([FromBody] Student student)
+        public async Task<Student> AddStudent([FromBody] StudentDTO student)
         {
             var newStudent = await _studentRepository.AddStudent(student);
             return newStudent;

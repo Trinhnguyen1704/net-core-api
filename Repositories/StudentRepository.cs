@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using net_core_api.Models;
+using net_core_api.Models.DTOs;
 
 namespace net_core_api.Repositories
 {
@@ -14,13 +15,20 @@ namespace net_core_api.Repositories
         {
             _context = context;
         }
-        public async Task<Student> AddStudent(Student student)
+        public async Task<Student> AddStudent(StudentDTO student)
         {
             try
             {
-                _context.Students.Add(student);
+                List<Class> classList = _context.Classes.Where(c => student.ClassIds.Contains(c.ClassId)).ToList();
+                var newStudent = new Student() {
+                    Name = student.Name,
+                    DateOfBirth = student.DateOfBirth,
+                    AverageMark = student.AverageMark,
+                    Classes = classList
+                };
+                _context.Students.Add(newStudent);
                 await _context.SaveChangesAsync();
-                return student;
+                return newStudent;
             }
             catch(Exception ex)
             {
