@@ -11,7 +11,7 @@ namespace net_core_api.Models
     public partial class Student
     {
         public Student() {
-            Classes = new HashSet<Class>();
+           ClassStudents = new HashSet<ClassStudent>();
         }
         [Key]
         public int Id {get; set;}
@@ -20,6 +20,6 @@ namespace net_core_api.Models
         [DisplayFormat(DataFormatString = "0:yyyy-MM-dd", ApplyFormatInEditMode =true)]
         public string DateOfBirth {get; set;}
         public float AverageMark {get; set;}
-        public virtual ICollection<Class> Classes {get; set;}
+        public virtual ICollection<ClassStudent> ClassStudents {get; set;}
     }
 }
