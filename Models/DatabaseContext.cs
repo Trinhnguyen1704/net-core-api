@@ -20,9 +20,9 @@ namespace net_core_api.Models
                 .HasForeignKey(s => s.StudentId);
 
             modelBuilder.Entity<ClassStudent>()
-              .HasOne(c => c.Class)
-              .WithMany(cs => cs.ClassStudents)
-              .HasForeignKey(c => c.ClassId);
+                .HasOne(c => c.Class)
+                .WithMany(cs => cs.ClassStudents)
+                .HasForeignKey(c => c.ClassId);
 
             base.OnModelCreating(modelBuilder);
         }
