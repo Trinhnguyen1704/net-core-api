@@ -73,6 +73,11 @@ namespace net_core_api.Controllers
         {
             return await _classRepository.GetClassesByName(className);
         }
+        [HttpGet("student/statistic")]
+        public async Task<IEnumerable<ClassSatisticDTO>> GetTotalStudents()
+        {
+            return await _classRepository.GetTotalStudents();
+        }
 
     }
 }

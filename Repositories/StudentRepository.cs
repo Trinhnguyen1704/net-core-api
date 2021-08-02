@@ -19,16 +19,16 @@ namespace net_core_api.Repositories
         {
             try
             {
-                List<Class> classList = _context.Classes.Where(c => student.ClassIds.Contains(c.ClassId)).ToList();
-                var newStudent = new Student() {
+                List<Class> classes = _context.Classes.Where(c => student.ClassIds.Contains(c.ClassId)).ToList();
+                var _newStudent = new Student() {
                     Name = student.Name,
                     DateOfBirth = student.DateOfBirth,
                     AverageMark = student.AverageMark,
-                    Classes = classList
+                    Classes = classes
                 };
-                _context.Students.Add(newStudent);
+                _context.Students.Add(_newStudent);
                 await _context.SaveChangesAsync();
-                return newStudent;
+                return _newStudent;
             }
             catch(Exception ex)
             {
@@ -56,7 +56,8 @@ namespace net_core_api.Repositories
             try
             {
                 return await _context.Students
-                .Include(x => x.Classes )
+                .Include(x => x.Classes)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(student => student.Id == id);
             }
             catch(Exception ex)
@@ -96,14 +97,18 @@ namespace net_core_api.Repositories
             return null;
         }
 
-        public async Task Update(Student student)
+        public async Task Update(StudentDTO student)
         {
             try
             {
-                var studentToUpdate = await GetStudent(student.Id);
+                //List<Class> classes = _context.Classes.Where(c => student.ClassIds.Contains(c.ClassId)).ToList();
+                var studentToUpdate = await _context.Students
+                .FirstOrDefaultAsync(s => s.Id == student.Id);
+
                 studentToUpdate.Name = student.Name;
                 studentToUpdate.DateOfBirth = student.DateOfBirth;
                 studentToUpdate.AverageMark = student.AverageMark;
+
                 await _context.SaveChangesAsync();
             }
             catch(Exception ex)
@@ -112,13 +117,66 @@ namespace net_core_api.Repositories
             }
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsWithMark(float averageMark)
+        public async Task<IEnumerable<Student>> GetStudentsWithMark(float averageMarkMin, float averageMarkMax)
         {
             try
             {
                 return await _context.Students
-                .Where(x=> x.AverageMark > averageMark)
+                .Where(x=> x.AverageMark >= averageMarkMin && x.AverageMark <= averageMarkMax)
+                .OrderBy(x => x.AverageMark)
                 .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsByName(string studentName)
+        {
+            try{
+                return await _context.Students.Include(x => x.Classes)
+                .Where(x => x.Name.Contains(studentName))
+                .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<Student>> SortStudentByMark(int sortNo)
+        {
+            try{
+                if(sortNo == 1) {
+                    return await _context.Students.Include(x => x.Classes)
+                    .OrderBy(s => s.AverageMark)
+                    .AsNoTracking()
+                    .ToListAsync();
+                }else
+                {
+                    return await _context.Students.Include(x => x.Classes)
+                    .OrderByDescending(s => s.AverageMark)
+                    .AsNoTracking()
+                    .ToListAsync();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsInSameClass(int studentId, int classId)
+        {
+            try{
+                var classObject = await _context.Classes.Include(x => x.Students)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.ClassId == classId);
+                return classObject.Students.Where(s => s.Id != studentId);
             }
             catch(Exception ex)
             {

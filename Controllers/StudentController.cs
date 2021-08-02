@@ -44,7 +44,7 @@ namespace net_core_api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateStudent(int id, [FromBody] Student student)
+        public async Task<ActionResult> UpdateStudent(int id, [FromBody] StudentDTO student)
         {
             if(id != student.Id)
             {
@@ -68,9 +68,27 @@ namespace net_core_api.Controllers
         }
         
         [HttpGet("mark")]
-        public async Task<IEnumerable<Student>> GetStudentsWithMark([FromQuery] float averageMark)
+        public async Task<IEnumerable<Student>> GetStudentsWithMark([FromQuery] float averageMarkMin, [FromQuery]float averageMarkMax)
         {
-            return await _studentRepository.GetStudentsWithMark(averageMark);
+            return await _studentRepository.GetStudentsWithMark(averageMarkMin, averageMarkMax);
+        }
+
+        [HttpGet("name")]
+        public async Task<IEnumerable<Student>> GetStudentsByName([FromQuery] string studentName)
+        {
+            return await _studentRepository.GetStudentsByName(studentName);
+        }
+
+        [HttpGet("sort")]
+        public async Task<IEnumerable<Student>> SortStudentByMark([FromQuery] int sortNo)
+        {
+            return await _studentRepository.SortStudentByMark(sortNo);
+        }
+
+        [HttpGet("same-class/{studentId}/{classId}")]
+        public async Task<IEnumerable<Student>> GetStudentsInSameClass(int studentId, int classId)
+        {
+            return await _studentRepository.GetStudentsInSameClass(studentId, classId);
         }
     }
 }
